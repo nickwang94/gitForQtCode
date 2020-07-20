@@ -31,7 +31,7 @@ Qt是一个**跨平台**的c++**图形用户界面应用程序框架**。
 
 - 选择Qt Widgets Application
 
-![1595056985368](C:\Users\wangwk-a\AppData\Roaming\Typora\typora-user-images\1595056985368.png)
+![1595056985368](./images/595056985368.png)
 
 - 创建项目不可以包含中文
 
