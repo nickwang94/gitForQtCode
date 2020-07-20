@@ -1,3 +1,7 @@
+---
+typora-copy-images-to: image
+---
+
 # Day 1（2020-07-18）
 
 ## 1. QT介绍
@@ -31,19 +35,19 @@ Qt是一个**跨平台**的c++**图形用户界面应用程序框架**。
 
 - 选择Qt Widgets Application
 
-![1595056985368](image\1595056985368.png)
+![1595056985368](./image/1595056985368.png)
 
 - 创建项目不可以包含中文
 
-<img src="image\1595057150044.png" alt="1595057150044" style="zoom:80%;" />
+<img src="./image/1595057150044.png" alt="1595057150044" style="zoom:80%;" />
 
 - 选择编译的套件，这里选择MinGW
 
-![1595057179765](image\1595057179765.png)
+![1595057179765](./image/1595057179765.png)
 
 - 在类信息中取消勾选窗口的创建
 
-![1595057393386](image\1595057393386.png)
+![1595057393386](./image/1595057393386.png)
 
 - 对于基类，Qt提供三个类，选择QWidget类
 
@@ -53,7 +57,7 @@ Qt是一个**跨平台**的c++**图形用户界面应用程序框架**。
 >
 > QDialog 对话框
 
-![1595057442571](C:\Users\wangwk-a\AppData\Roaming\Typora\typora-user-images\1595057442571.png)
+![1595057442571](./image/1595057442571.png)
 
 图中的类名是子类的名字，取名为"MyWidget"，Qt会为我们自动生成一个类：
 
@@ -61,7 +65,7 @@ Qt是一个**跨平台**的c++**图形用户界面应用程序框架**。
 
 - 界面说明
 
-![1595057794975](C:\Users\wangwk-a\AppData\Roaming\Typora\typora-user-images\1595057794975.png)
+![1595057794975](./image/1595057794975.png)
 
 > 第一个是“编译-运行”
 >
@@ -73,7 +77,7 @@ Qt是一个**跨平台**的c++**图形用户界面应用程序框架**。
 
 - 结果
 
-<img src="C:\Users\wangwk-a\AppData\Roaming\Typora\typora-user-images\1595057960797.png" alt="1595057960797" style="zoom:50%;" />
+<img src="./image/1595057960797.png" alt="1595057960797" style="zoom:50%;" />
 
 一个空窗口
 
