@@ -31,19 +31,19 @@ Qt是一个**跨平台**的c++**图形用户界面应用程序框架**。
 
 - 选择Qt Widgets Application
 
-![1595056985368](./images/595056985368.png)
+![1595056985368](image\1595056985368.png)
 
 - 创建项目不可以包含中文
 
-<img src="C:\Users\wangwk-a\AppData\Roaming\Typora\typora-user-images\1595057150044.png" alt="1595057150044" style="zoom:80%;" />
+<img src="image\1595057150044.png" alt="1595057150044" style="zoom:80%;" />
 
 - 选择编译的套件，这里选择MinGW
 
-![1595057179765](C:\Users\wangwk-a\AppData\Roaming\Typora\typora-user-images\1595057179765.png)
+![1595057179765](image\1595057179765.png)
 
 - 在类信息中取消勾选窗口的创建
 
-![1595057393386](C:\Users\wangwk-a\AppData\Roaming\Typora\typora-user-images\1595057393386.png)
+![1595057393386](image\1595057393386.png)
 
 - 对于基类，Qt提供三个类，选择QWidget类
 
