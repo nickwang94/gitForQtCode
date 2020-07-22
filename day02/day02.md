@@ -268,9 +268,9 @@
 
 2. Qt样式表查询的方法
 
-<img src="image/58.png" style="zoom:80%;" />
+<img src="image/58.png" style="zoom:60%;" />
 
-<img src="image/59.png" style="zoom:80%;" />
+<img src="image/59.png" style="zoom:60%;" />
 
 3. 样式表语法
 
@@ -326,7 +326,260 @@ QCheckBox, QComboBox, QSpinBox {
 
 ![](image/64.png)
 
-> 默认图片是平铺的，
+> 默认图片是平铺的， 可以通过属性设置平铺方式：
+>
+> - background-positon 位置
+> - background-repeat 是否重复
+
+6. 创建可缩放样式
+
+默认情况下，通过background-image指定的背景图片会自动重复平铺，已覆盖部件的整个填充矩形，如果想创建能够随部件大小自动缩放而不是平铺的背景，要设置一个称为“<u>***边框图片***</u>”的东西。  
+
+- 边框图片可以通过“<u>***border-image***</u>”设置，同时提供部件的背景和边框
+- 边框图片被分为九部分
+- 当一个部件的边框被填充时，四角的格子通常不会发生变化，而其余五个格子则可能被拉伸或平铺以填充可用空间
+
+> ```c++
+> QPushButton {
+> 	border-width : 4px;
+> 	border-image : url(button.png) 4 4 4 4 stretch stretch;
+> }
+> ```
+
+![](image/65.png)
+
+7. 控制大小
+
+- min-width
+- min-height
+
+以上两个属性可以用来指定一个部件的内容区域的最小大小，两个值将影响部件的mininumSizeHint()，病在布局时被考虑。  
+
+> ```c++
+> QPushButton {
+> 	min-width : 68px;
+> 	min-height : 28px;
+> }
+> ```
+
+8. 处理伪状态
+
+部件的外观可以按照用户界面元素状态的不同来分别定义，这在样式表中被称为“伪状态”。例如，如果我们想在一个QPushButton按下时具有sunken的外观，可以指定一个叫做"<u>***:pressed***</u>"的伪状态。  
+
+> ```c++
+> QPushButton {
+> 	border : 2px outset green;
+> 	background : gray;
+> }
+> 
+> QPushButton : pressed {
+>     border-style : inset;
+> }
+> ```
+
+下面是可用的伪状态列表 :ballot_box_with_check:
+
+| 伪状态         | 描述                                       |
+| -------------- | ------------------------------------------ |
+| :checked       | button部件被选中                           |
+| :disabled      | 部件被禁止                                 |
+| :enabled       | 部件被启用                                 |
+| :focus         | 部件获得焦点                               |
+| :hover         | 鼠标位于部件上(放在上面):heavy_check_mark: |
+| :indeterminate | checkBox或radioButton被部分选中            |
+| :off           | 部件可以切换，且处于off状态                |
+| :on            | 部件可以切换，且处于on状态                 |
+| :pressed       | 部件被鼠标按下:heavy_check_mark:           |
+| :unchecked     | button部件未被选中                         |
+
+<img src="image/66.png" style="zoom:80%;" />
+
+9. 使用子部件定义微观样式
+
+许多部件都包含子元素，这些元素可以称为“子部件”，SpinBox的上下箭头就是子部件最好的例子。  
+
+子部件可以通过“<u>***::***</u>”来指定，例如`QDateTimeEdit::up-button`。定义子部件的样式与定义部件非常类似，它们遵循前面提到的方箱模型，并且可以和伪状态联合使用，例如`QSpinBox::up-button:hover`。  
+
+下面是可用的子部件类型:ballot_box_with_check::
+
+| 子部件           | 描述                                        |
+| ---------------- | ------------------------------------------- |
+| ::down-arrow     | comboBox或spinBox的下拉箭头                 |
+| ::down-button    | spinBox的向下按钮                           |
+| ::drop-down      | comboBox的下来箭头                          |
+| ::indicator      | checkBox、radioButton或可选groupBox的指示器 |
+| ::item           | menu、menuBar、statusBar的子项目            |
+| ::menu-indicator | pushButton的菜单指示器                      |
+| ::title          | groupBox的标题                              |
+| ::up-arrow       | spinBox向上箭头                             |
+| ::up-button      | spinBox向上按钮                             |
+
+## 2.5 事件
+
+1. 相关概念
+
+事件（Event）是由系统或Qt本身在不同时刻发出的，当用户按下鼠标、敲下键盘，或者是窗口需要重新绘制时，都会发出一个相应的事件。一些事件在对用户操作做出响应时发出，如键盘事件；另一些事件则是由系统自动发出，如计时器事件。  
+
+在前面提到，Qt程序需要在`main()`函数创建一个`QApplication`对象，然后调用它的`exec()`函数。这个函数就是开始Qt的事件循环。在执行`exec()`之后，程序将进入事件循环来监听应用程序的事件。当事件发生时，Qt创建一个事件对象。Qt中所有的事件类都继承`QEvent`。在事件对象创建完毕后，Qt将这个事件对象传递给`QObject`的`event()`函数，该函数并不直接处理事件，而是按照时间对象的类型分派给特定的事件处理函数（`event handler`）。  
+
+![](image/67.png)
+
+在所有组件的父类`QWidget`中，定义了很多事件处理的回调函数，如
+
+- keyPressEvent()
+- keyReleaseEvent()
+- mouseDoubleClickEvent()
+- mouseMoveEvent()
+- mousePressEvent()
+- mouseReleaseEvent()
+- 等等
+
+这些函数都是`protected virtual`的，我们可以在子类中重新实现这些函数。
+
+<img src="image/68.png" style="zoom:80%;" />
+
+2. 鼠标事件（在新建类中创建）
+
+- 鼠标点击事件响应
+
+首先新建一个项目，然后在ui中拖拽一个QLabel控件，设置这个窗口为垂直布局。  
+
+然后新建一个c++类`MyLabel`让其继承`QLabel`，但是Qt的基类选择只有`QWidget`，先选择它，然后在文件中进行基类修改。  
+
+<img src="image/69.png" style="zoom:80%;" />
+
+然后需要在MyLabel类中继承基类的虚函数：  
+
+<img src="image/70.png" style="zoom:80%;" />
+
+查看`QMouseEvent`帮助文档，然后点击公有函数中的`Button()`函数：  
+
+<img src="image/71.png" style="zoom:80%;" />\
+
+该函数返回值为枚举类型`Qt::MouseButton`，具体的为：  
+
+<img src="image/72.png" style="zoom:80%;" />
+
+还需要的公有函数为`globalPos()`：
+
+<img src="image/73.png" style="zoom:80%;" />
+
+> 需要区分的是：
+>
+> - globalPos 为全局坐标，相对于屏幕而言
+> - localPos为局部坐标，相对于控件而言
+> - windowsPos为窗口坐标，相对于窗口而言
+
+接下来编辑`MyLabel::mousePressEvent`函数：  
+
+<img src="image/74.png" style="zoom:80%;" />
+
+但是，此时编译运行并不能获取鼠标点击的坐标，原因是ui中的label为`QLabel`，因此还需要将其提升为`MyLabel`：  
+
+![](image/75.png)
+
+现在，点击窗口后会显示鼠标坐标的位置信息：  
+
+<img src="image/76.png" style="zoom:80%;" />
+
+此时点击窗口外是没有响应的，因为所使用的是`windowsPos()`函数，只对窗口位置的鼠标点击事件进行响应。  
+
+- 鼠标移动响应
+
+鼠标移动和鼠标按下的操作基本一致，同样是通过获取ev的参数进行显示，但是当程序第一次执行时，`MyLabel`显示的是默认值，只有当鼠标按下后才开始对鼠标进行追踪。如果想一进来就对鼠标进行追踪，需要在`MyLabel`构造函数中进行设置：
+
+<img src="image/77.png" style="zoom:80%;" />
+
+3. 键盘事件（在Widget类中实现）
+
+首先，在Widget中重写键盘按下的事件相应函数：  
+
+<img src="image/79.png" style="zoom:80%;" />
+
+其中`QKeyEvent`对象有一个函数`key()`，该函数能够返回键盘对应的`int`型枚举：  
+
+<img src="image/78.png" style="zoom:80%;" />
+
+在事件处理中对所按下的字符进行输出显示：  
+
+<img src="image/80.png" style="zoom:80%;" />
+
+4. 计时器事件
+
+重写计时器事件的函数：  
+
+<img src="image/81.png" style="zoom:80%;" />
+
+计时器是需要启动的，在构造函数中进行计时器的启动，以毫米为单位：  
+
+<img src="image/82.png" style="zoom:80%;" />
+
+在计时器事件的响应函数中，通过timerId来对定时器进行区分：  
+
+<img src="image/83.png" style="zoom:80%;" />
+
+计时器最后可以进行删除，同样通过timerId来进行关闭，本例子中通过按下键盘F1键来关闭计时器：  
+
+<img src="image/84.png" style="zoom:80%;" />
+
+## 2.6 事件的接受与忽略
+
+1. 手写事件的接受与忽略
+
+前面介绍了事件的相关内容，事件可以依情况接受和忽略，现在就来了解事件的更多知识。  
+
+首先创建一个`MyButton:QPushButton`，然后在ui中创建一个`QPushButton`提升为`Mybutton`。  
+
+在`Widget`类的构造函数中编写`connect`函数，只有鼠标点击就会打印一句话。  
+
+<img src="image/85.png" style="zoom:80%;" />
+
+然后在`MyButton`类中重写鼠标按下的事件，对鼠标左键点击事件进行响应，对其他的鼠标事件进行忽略。  
+
+<img src="image/86.png" style="zoom:80%;" />
+
+此时，点击按钮，如果是左键点击就会输出“左键按下”，其他键点击按钮就不会有任何输出。  
+
+![](image/87.png)
+
+因为信号被事件拦截了，并进行了处理，如果是左键输出，不是就交给父对象，这个信号被忽略了，就不会再有`clicked`信号传送到槽函数，因此槽函数就不会有输出。
+
+2. Qt内置函数
+
+- accept()
+  - 用来告诉Qt，这个类的事件处理函数想要处理这个事件，如果一个事件处理函数调用了一个事件对象accept()函数，这个事件就不会被继续传播给其他父组件
+- ignore()
+  - 用来告诉Qt，这个类的事件处理函数不想要处理这个事件，如果调用了事件的ignore()函数，Qt会从其他父组件中寻找另外的接受者
+- isAccepted()
+  - 在事件处理函数中，可以使用isAccept()函数来查询这个事件是不是已经被接受
+
+> 一个MyButton的鼠标点击事件，进行ignore()，则信号会继续传递，但是传递给谁？
+>
+> 答案：不是父类（基类），而是<u>***父组件***</u>。
+>
+> <img src="image/88.png" style="zoom:80%;" />
+>
+> MyButton的父组件为Widget，为了验证，修改Widget类的鼠标点击事件：
+>
+> <img src="image/89.png" style="zoom:80%;" />
+>
+> 然后左键点击按钮会显示“左键按下”，其他键点击按钮，会显示“这是Widget类的mousePressEvent”
+
+3. accept和ignore的典型应用
+
+在关闭窗口时，弹出提示框，提问用户是否确定关闭，如果确定，就需要`accept()`接受事件，事件就不会往下传；如果用户点击取消，就需要`ignore()`忽略事件，然后事件会继续给父组件传递，界面返回。
+
+<img src="image/90.png" style="zoom:80%;" />
+
+## 2.7 event()函数
+
+1. event函数的作用
+
+<img src="image/91.png" style="zoom:80%;" />
+
+
+
+
 
 
 

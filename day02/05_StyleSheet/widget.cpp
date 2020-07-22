@@ -21,8 +21,22 @@ Widget::Widget(QWidget *parent) :
         "color : red;"
         "background-color : blue;"
         "font : bold;"
-        "background-image : url(://image/pic.png)"
+        "background-image : url(://image/pic.png);"
+        "border-image : url(://image/pic.png);"
         "}");
+
+    // 改变按钮的样式
+    ui->pushButton->setStyleSheet("QPushButton{"
+                                  "border-image : url(://image/btnNromal.png);"
+                                  "}"
+
+                                  "QPushButton:hover {"
+                                  "border-image : url(://image/btnHover.png);"
+                                  "}"
+
+                                  "QPushButton:pressed {"
+                                  "border-image : url(://image/btnClicked.png);"
+                                  "}");
 }
 
 Widget::~Widget()

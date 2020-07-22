@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>image/pic.png</file>
+        <file>image/btnClicked.png</file>
+        <file>image/btnHover.png</file>
+        <file>image/btnNromal.png</file>
     </qresource>
 </RCC>

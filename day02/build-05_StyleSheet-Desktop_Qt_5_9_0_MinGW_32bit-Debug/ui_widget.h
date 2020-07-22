@@ -17,6 +17,8 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -31,6 +33,8 @@ public:
     QVBoxLayout *verticalLayout;
     QLabel *label_2;
     QLabel *label_3;
+    QPushButton *pushButton;
+    QSpacerItem *horizontalSpacer;
 
     void setupUi(QWidget *Widget)
     {
@@ -66,7 +70,17 @@ public:
         horizontalLayout->addLayout(verticalLayout);
 
 
-        gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
+        gridLayout->addLayout(horizontalLayout, 0, 0, 1, 2);
+
+        pushButton = new QPushButton(Widget);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setMinimumSize(QSize(130, 30));
+
+        gridLayout->addWidget(pushButton, 1, 0, 1, 1);
+
+        horizontalSpacer = new QSpacerItem(273, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout->addItem(horizontalSpacer, 1, 1, 1, 1);
 
 
         retranslateUi(Widget);
@@ -80,6 +94,7 @@ public:
         label->setText(QApplication::translate("Widget", "TextLabel", Q_NULLPTR));
         label_2->setText(QApplication::translate("Widget", "TextLabel", Q_NULLPTR));
         label_3->setText(QApplication::translate("Widget", "TextLabel", Q_NULLPTR));
+        pushButton->setText(QString());
     } // retranslateUi
 
 };
