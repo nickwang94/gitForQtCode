@@ -575,11 +575,62 @@ QCheckBox, QComboBox, QSpinBox {
 
 1. event函数的作用
 
-<img src="image/91.png" style="zoom:80%;" />
+<img src="image/91.png" style="zoom:70%;" />
 
 
 
+2. 重写事件分发函数
 
+<img src="image/92.png" style="zoom:80%;" />
+
+查看`QEvent`的帮助文档，然后点击`public function`，选择`type()`函数，查看其返回值：  
+
+<img src="image/93.png" style="zoom:70%;" />
+
+在`event()`函数中，返回值为`bool`类型：  
+
+- 如果传入的事件已被识别并且处理，则需要返回`true`，否则返回`false`。如果返回值是`true`，那么Qt会认为这个事件已经处理完毕，不会再将改时间发送给其他对象。
+
+在`event()`函数中处理定时器的事件，对于其他事件直接给父类的默认事件分发函数：  
+
+<img src="image/94.png" style="zoom:80%;" />
+
+## 2.8 事件过滤器
+
+1. 使用`event()`函数可以进行事件过滤，为何还需要事件过滤器？
+
+<img src="image/95.png" style="zoom:67%;" />
+
+对于某一个控件或者一个窗口而言，使用`event()`固然方便，但是对于一个应用程序，有若干个控件，这种方式难以管理事件，使得效率低下。事件是经过事件过滤器然后经过`event()`的，因此在事件过滤器中对事件进行过滤会更加方便。  
+
+2. 事件过滤器函数原型
+
+`QObject`有一个函数`eventFilter()`函数，用于建立事件过滤器，其函数原型如下：  
+
+<img src="image/96.png" style="zoom:80%;" />
+
+- `QObject *watched`参数指定关心的控件
+- `QEvent *event`参数指定关心的事件
+
+- 该函数返回`bool`类型，如果你想将参数event过滤出来，就返回true，否则返回false
+
+3. 具体例子
+
+首先在Widget中创建事件过滤器：  
+
+<img src="image/97.png" style="zoom:80%;" />
+
+该函数只是对过滤器进行了创建，还需要对具体某一个控件进行“过滤器安装”，需要在构造函数中进行过滤器安装，函数`installEventFilter()`需要一个参数来指定事件接受处理的对象：  
+
+<img src="image/98.png" style="zoom:80%;" />
+
+具体事件过滤器的写法为：  
+
+<img src="image/99.png" style="zoom:80%;" />
+
+4. 关于事件过滤器需要说明部分
+
+事件过滤器和被安装过滤器的组件必须在同一线程，否则过滤器将不起作用。另外，如果在安装过滤器之后，这两个组件到了不同的线程，那么只有等到二者重新回到同一线程的时候过滤器才会有效。
 
 
 

@@ -26,6 +26,12 @@ protected:
     // 关闭事件
     void closeEvent(QCloseEvent *event);
 
+    // 事件分发
+    bool event(QEvent *event);
+
+    // 事件过滤器
+    bool eventFilter(QObject *watched, QEvent *event);
+
 
 private:
     Ui::Widget *ui;

@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QEvent>
 
 int Widget::min = 0;
 int Widget::sec = 0;
@@ -24,6 +25,12 @@ Widget::Widget(QWidget *parent) :
     // 在MyButton类中重载了鼠标按下的事件
     // 只对鼠标左键响应，此时该槽函数不会被执行
     connect(ui->pushButton, &MyButton::clicked, ui->pushButton, &MyButton::saySth);
+
+    // 安装过滤器
+    ui->timer1->installEventFilter(this);
+
+    // 设置鼠标自动追踪
+    ui->timer1->setMouseTracking(true);
 }
 
 Widget::~Widget()
@@ -95,3 +102,51 @@ void Widget::closeEvent(QCloseEvent *event)
         event->ignore();
     }
 }
+
+/**
+ * @brief Widget::event
+ * @param event
+ * @return
+ * 重写事件分发函数
+ */
+bool Widget::event(QEvent *event)
+{
+    if (event->type() == QEvent::Timer){
+        // 关闭定时器
+        // 如果返回true，事件停止传播
+        QTimerEvent *env = static_cast<QTimerEvent *>(event);
+        timerEvent(env);
+        return true;
+    } else if (event->type() == QEvent::KeyPress){
+        // 只处理按键B的响应
+        QKeyEvent *env = static_cast<QKeyEvent *>(event);
+        if (env->key() == Qt::Key_B){
+            return QWidget::event(event);
+        }
+        return true;
+    } else {
+        return QWidget::event(event);
+    }
+}
+
+/**
+ * @brief Widget::eventFilter
+ * @param watched
+ * @param event
+ * @return
+ * 过滤器创建
+ */
+bool Widget::eventFilter(QObject *watched, QEvent *event)
+{
+    // 对定时器的QLabel类型进行事件过滤
+    if (watched == ui->timer1){
+        QMouseEvent *env = static_cast<QMouseEvent *>(event);
+        // 判断事件
+        if (event->type() == QEvent::MouseMove){
+            ui->timer1->setText(QString("Mouse Move:(%1,%2)").arg(env->x()).arg(env->y()));
+            return true; // 不让这个事件继续传播
+        }
+    }
+    return QWidget::eventFilter(watched, event);
+}
+
