@@ -16,10 +16,16 @@ public:
     ~MyWidget();
 
 protected:
+    // 重绘
     void paintEvent(QPaintEvent *event);
+    // 鼠标移动
+    void mouseMoveEvent(QMouseEvent *event);
+    // 鼠标按下
+    void mousePressEvent(QMouseEvent *event);
 
 private:
     Ui::MyWidget *ui;
+    QPoint p; // 差值AAAAA
 };
 
 #endif // MYWIDGET_H
