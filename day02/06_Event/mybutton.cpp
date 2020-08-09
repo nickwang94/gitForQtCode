@@ -13,7 +13,6 @@ MyButton::MyButton(QWidget *parent) : QPushButton(parent)
  * @param e
  * 判断左键按下打印一句话，否则不做处理
  */
-/*
 void MyButton::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton) {
@@ -26,7 +25,7 @@ void MyButton::mousePressEvent(QMouseEvent *e)
 
     QPushButton::mousePressEvent(e);
 }
-*/
+
 
 
 /**

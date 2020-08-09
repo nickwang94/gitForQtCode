@@ -10,7 +10,7 @@ public:
     explicit MyButton(QWidget *parent = nullptr);
 
 protected:
-    // void mousePressEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent *e);
 
 signals:
 
