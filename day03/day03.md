@@ -204,21 +204,260 @@ Pixmap需要对绘制的图片进行保存，运行后会加载一个空窗口�
 
 
 
-
-
 鼠标点击并拖动窗口的位置是下图红色点，但是窗口移动的是绿色点，所以需要通过红色点的坐标获取绿色点的坐标，然后才能进行窗口移动。  
 
 <img src="image/31.png" style="zoom:70%;" />
 
+# 2. 文件
 
+## 2.1 QFile读写文件
 
+1. `QIODevice`类结构
 
+<img src="image/34.png" style="zoom:75%;" />
 
+> `QBuffer`：内存文件
+>
+> `QProcess`：进程相关，启动外部程序
+>
+> `QFileDevice`：文件描述符操作
+>
+> `QAbstractSocket`：网络编程
 
+2. 文件相关对话框
 
+打开文件对话框：  
 
+```c++
+QString path = QFileDialog::getOpenFileName(this,
+                "Open", "../", "TXT(*.txt)");
+```
 
+保存文件对话框：  
 
+```c++
+QString path = QFileDialog::getSaveFileName(this, "Save", "../", "TXT(*.txt)");
+```
 
+3. 读文件
 
+- 创建文件对象
 
+```c++
+QFile file(path);
+```
+
+- 打开文件
+
+```c++
+bool isOK = file.open(QIODevice::ReadOnly);
+```
+
+- 读文件
+
+```c++
+// 方式一：全部读取
+QByteArray array = file.readAll();
+
+// 方式二：按行读取
+QByteArray array;
+while (file.atEnd() == false)
+{
+    // 读一行
+    array += file.readLine();
+}
+```
+
+- 关闭文件
+
+```c++
+file.close();
+```
+
+4. 获取文件相关信息
+
+文件信息的获取，与文件的打开和关闭无关，只需要提供文件路径。  
+
+```c++
+QFileInfo info(path);
+qDebug() << QStringLiteral("文件名:") << info.fileName();
+qDebug() << QStringLiteral("文件后缀:") << info.suffix();
+qDebug() << QStringLiteral("文件大小:") << info.size();
+qDebug() << QStringLiteral("文件创建时间:") << info.created().toString("yyyy-MM-dd hh:mm:ss");
+```
+
+5. 写文件
+
+- 创建文件对象
+
+```c++
+QFile file(path);
+```
+
+- 打开文件
+
+```c++
+bool isOK = file.open(QIODevice::WriteOnly);
+```
+
+- 写文件
+
+```c++
+file.write(str.toUtf8());
+```
+
+6. 文件编码
+
+- `QString`转`QByteArray`
+
+> 中文：`str.toUtf8()`
+>
+> 本地编码：`str.toLocal8Bit()`
+
+- `QByteArray`转`char*`
+
+> `array.data()`
+
+- `char*`转`QString`
+
+> `QString(buf)`
+
+## 2.2 QDataStream读写文件
+
+数据流读写文件时，文件的形式不仅仅为文本，可以是任意的视频、语音文件。  
+
+1. 数据流写文件
+
+- 创建文件对象
+
+```c++
+QFile file("../text.txt");
+```
+
+- 打开文件
+
+```c++
+bool isOK = file.open(QIODevice::WriteOnly);
+```
+
+- 创建数据流，和文件相关联
+
+```c++
+QDataStream stream(&file);
+```
+
+- 往数据流中写数据，会直接写入文件
+
+```c++
+stream << QString("NickWang") << 250;
+```
+
+- 最后关闭文件
+
+```c++
+file.close();
+```
+
+写完的文件打开后会乱码，因为其是以流的形式进行存储，只要能够对应的读出来就行。  
+
+2. 数据流读文件
+
+- 以写数据流时相同的格式进行读取
+
+```c++
+stream >> str >> num;
+```
+
+3. 题外话
+
+关于`qDebug()`的调试技巧：  
+
+```c++
+#define cout qDebug() << "[" << __FILE__ << ":" << __LINE__ << "]"
+```
+
+## 2.3 QTextStream
+
+以文本流的方式操作文件，其优点是可以指定编码形式。
+
+1. 写文件
+
+- 创建文件对象
+
+```c++
+QFile file;
+file.setFileName("text.txt");
+```
+
+- 打开文件
+
+```c++
+bool isOK = file.open(QIODevice::WriteOnly);
+```
+
+- 创建流对象，关联文件
+
+```c++
+QTextStream stream(&file);
+```
+
+- 设置编码格式
+
+```c++
+stream.setCodec("UTF-8");
+```
+
+- 写文件
+
+```c++
+stream << QStringLiteral("你好，这是测试文本") << 250;
+file.close();
+```
+
+2. 读文件
+
+注意：在使用`QTextStream`读文件时，不可以直接按照流的方式读取，因为流方式不能区分数据类型，会将数据看成`QString`连在一起。如用流写入一个文本和一个整形，读出的效果为：  
+
+<img src="image/35.png" style="zoom:80%;" />
+
+其中`250`为整形数据，被当作`QString`来处理了。  
+
+因此正确的读取方式应该为：  
+
+```c++
+QString str = stream.readAll();
+```
+
+## 2.4  QBuffer
+
+`QBuffer`为内存文件，写在内存缓冲区中。  
+
+1. 构造`QBuffer`对象并打开
+
+```c++
+QBuffer memFile;
+mamFile.open(QIODevice::WriteOnly);
+
+```
+
+2. 写入buffer中，然后进行关闭
+
+```c++
+memFile.write("1111");
+memFile.close();
+```
+
+3. `QBuffer`的访问
+
+```c++
+qDebug() << memFile.buffer();
+```
+
+4. `QBuffer`与流的使用
+
+```c++
+QByteArray array;
+QBuffer memFile(&array); // 创建内存文件
+```
+
+后续的写入操作，会将内容写入`array`中。
