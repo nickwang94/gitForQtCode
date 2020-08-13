@@ -44,7 +44,6 @@ Widget::Widget(QWidget *parent) :
     int a;
     in >> str >> a;
     qDebug() << str.toUtf8().data() << a;
-
 }
 
 Widget::~Widget()
