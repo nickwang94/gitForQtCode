@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2020-08-13T10:58:22
+# Project created by QtCreator 2020-08-13T17:58:38
 #
 #-------------------------------------------------
 
@@ -8,7 +8,7 @@ QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = 04_Datebase
+TARGET = 05_ModelView
 TEMPLATE = app
 
 
