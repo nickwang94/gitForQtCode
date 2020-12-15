@@ -1,4 +1,4 @@
-#include "smallwidget.h"
+﻿#include "smallwidget.h"
 #include <QSpinBox>
 #include <QSlider>
 #include <QHBoxLayout>

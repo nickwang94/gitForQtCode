@@ -1,4 +1,4 @@
-#include "mybutton.h"
+﻿#include "mybutton.h"
 #include <QDebug>
 
 MyButton::MyButton(QWidget *parent)

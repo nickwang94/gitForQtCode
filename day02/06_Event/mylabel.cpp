@@ -1,4 +1,4 @@
-#include "mylabel.h"
+﻿#include "mylabel.h"
 #include <QMouseEvent>
 #include <QDebug>
 

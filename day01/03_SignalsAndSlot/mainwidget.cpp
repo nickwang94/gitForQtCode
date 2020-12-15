@@ -1,4 +1,4 @@
-#include "mainwidget.h"
+﻿#include "mainwidget.h"
 #include <QPushButton>
 
 MainWidget::MainWidget(QWidget *parent)

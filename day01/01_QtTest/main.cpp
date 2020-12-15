@@ -1,4 +1,4 @@
-#include "mywidget.h"
+﻿#include "mywidget.h"
 
 // QApplication应用程序类
 // Qt头文件没有.h

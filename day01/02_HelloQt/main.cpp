@@ -1,4 +1,4 @@
-#include <QApplication>
+﻿#include <QApplication>
 #include <QWidget> // 窗口控件基类
 #include <QPushButton>
 

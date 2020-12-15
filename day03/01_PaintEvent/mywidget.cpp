@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Method 1
  * QPainter p; // 创建绘图工具
  * p.begin(this); // 指定当前窗口为绘图设备
