@@ -1,13 +1,13 @@
-#ifndef MAINWIDGET_H
+﻿#ifndef MAINWIDGET_H
 #define MAINWIDGET_H
 
 #include <QWidget>
 #include <QPushButton>
-#include "subwidget.h" // 子窗口头文件
+#include "subwidget.h" // 瀛愮獥鍙ｅご鏂囦欢
 
 class MainWidget : public QWidget
 {
-    Q_OBJECT // 信号与槽相关，这里可以不要`
+    Q_OBJECT // 淇″彿涓庢Ы鐩稿叧锛岃繖閲屽彲浠ヤ笉瑕乣
 
 public:
     MainWidget(QWidget *parent = 0);

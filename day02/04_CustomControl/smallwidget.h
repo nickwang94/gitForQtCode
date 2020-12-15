@@ -1,4 +1,4 @@
-#ifndef SAMLLWIDGET_H
+﻿#ifndef SAMLLWIDGET_H
 #define SAMLLWIDGET_H
 
 #include <QWidget>
